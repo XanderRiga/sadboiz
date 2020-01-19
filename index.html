@@ -1,25 +1,158 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="js/scripts.js"></script>
+<meta charset="UTF-8">
 
 <h1 class="center">S A D B O I Z</h1>
 
 <table id="wrapper">
   <tr>
-    <td><img id="image-stuff" src="" alt="" /></td>
+    <td>
+      <input hidden id="image-button" type="button" value="Randomize" onclick="update_image()">
+    </td>
   </tr>
+  <tr>
+    <td>
+      <img hidden id="image-stuff" src="" alt="" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p id="car-label">What is the make and model of the greatest car to ever grace the earth with it's existence?</p><br>
+      <input id="car-input" type="text" name="car">
+      <p hidden id="car-correct">✔</p>
+
+      <p id="band-label">What is the greatest band of all time?</p><br>
+      <input id="band-input" type="text" name="band">
+      <p hidden id="band-correct">✔</p>
+
+      <p id="mom-label">Whose mom is the best and is absolutely never disrespected when playing Jackbox?</p><br>
+      <input id="mom-input" type="text" name="mom">
+      <p hidden id="mom-correct">✔</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div id="video" hidden>
+        <h2>🎉Happy Birthday my dude🎉</h2>
+        <video src="images/ceemac.m4v" controls>
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </td>
+  </tr>
+
 </table>
 
 <script>
-	
+  var imageRandoms = -1;
+  var numCorrect = 0;
+
 	$(document).ready(function() {
-		$('#image-stuff').attr('src', 'images/' + random_image());
+	  update_image();
+	  track_car_changes();
+	  track_mom_changes();
+	  track_band_changes();
+	  track_image_randoms();
 	});
+
+	function update_image() {
+    $('#image-stuff').attr('src', 'images/' + random_image());
+    imageRandoms++;
+    track_image_randoms();
+	}
 	
 	function random_image() {
-		var images = ['collinBooty.png', 'lmao.png', 'verblol.png', 'xandercool.png', 'Xandercool2.png', 'xandersad.png', 'xandertilted.png', 'zeersexy.png', 'takusad.png']
+		const images = ['collinBooty.png', 'lmao.png', 'verblol.png', 'xandercool.png', 'Xandercool2.png', 'xandersad.png', 'xandertilted.png', 'zeersexy.png', 'takusad.png'];
 
 		return images[Math.floor(Math.random()*images.length)];
 	}
+
+	function track_image_randoms() {
+	  if (imageRandoms >= 10) {
+      show_video();
+    }
+  }
+
+  function show_video() {
+    $('#image-stuff').hide();
+    $('#image-button').hide();
+    $('#video').show();
+  }
+
+	function all_answers_correct() {
+    numCorrect += 1;
+    if (numCorrect >= 3) {
+      show_images();
+    }
+  }
+
+  function hide_car() {
+	  $('#car-input').hide();
+	  $('#car-label').hide();
+	  $('#car-correct').show();
+  }
+
+  function hide_mom() {
+    $('#mom-label').hide();
+    $('#mom-input').hide();
+    $('#mom-correct').show();
+  }
+
+  function hide_band() {
+    $('#band-label').hide();
+    $('#band-input').hide();
+    $('#band-correct').show();
+  }
+
+  function show_images() {
+    $('#band-correct').hide();
+    $('#mom-correct').hide();
+    $('#car-correct').hide();
+	  $('#image-stuff').show();
+	  $('#image-button').show();
+  }
+
+  function track_car_changes() {
+    $('#car-input').change(function () {
+      evaluate_car_answer();
+    })
+  }
+
+  function evaluate_car_answer() {
+    const answer = $('#car-input').val();
+    if (answer.toLowerCase() === 'toyota camry') {
+      hide_car();
+      all_answers_correct();
+    }
+  }
+
+  function track_mom_changes() {
+    $('#mom-input').change(function () {
+      evaluate_mom_answer();
+    })
+  }
+
+  function evaluate_mom_answer() {
+    const answer = $('#mom-input').val();
+    if (answer.toLowerCase() === 'xander' || answer.toLowerCase() === 'xanders' || answer.toLowerCase() === "xander's") {
+      hide_mom();
+      all_answers_correct();
+    }
+  }
+
+  function track_band_changes() {
+    $('#band-input').change(function () {
+      evaluate_band_answer();
+    })
+  }
+
+  function evaluate_band_answer() {
+    const answer = $('#band-input').val();
+    if (answer.toLowerCase() === 'yellowcard') {
+      hide_band();
+      all_answers_correct();
+    }
+  }
 </script>
 
 <style>
